@@ -14,10 +14,10 @@ def get_first_intersection(ray):
    closest_intersected_object = None
    for obj in objects:
         result = obj.find_intersection(ray)
-        if result.hit is True:
-            if result.dist < closest_intersection_distance:
+        if result[1] is True:
+            if result[0] < closest_intersection_distance:
                 closest_intersected_object = obj
-                closest_intersection_distance = result.dist
+                closest_intersection_distance = result[0]
 
    return closest_intersected_object
 
