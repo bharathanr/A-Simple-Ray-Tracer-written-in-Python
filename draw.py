@@ -46,16 +46,16 @@ def render(ray_buffer = []):
             print "100% complete..."
            
         for y in range(height):
-            #primary_ray = Ray(Vector3(x, y, 0), -UNIT_Z)
-            primary_ray = ray_buffer[x * height + y]
+            primary_ray = Ray(Vector3(x, y, 0), -UNIT_Z)
+            #primary_ray = ray_buffer[x * height + y]
             color = ray_trace(primary_ray)
             image_buf.append(clamp(color))
     return image_buf
             
 def main():
     initialise_default_scene()
-    buf = render(generate_rays())
-    #buf = render()
+    #buf = render(generate_rays())
+    buf = render()
     save_bmp("QuestWorld", buf, (1024, 768))
 
 if __name__== '__main__':

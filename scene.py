@@ -10,6 +10,7 @@
 from numpy import array
 
 from sphere import Sphere
+from vector3 import Vector3
 
 #Description of the scene
 #Eventually, this should be read from a file
@@ -31,13 +32,13 @@ MAX_RECURSIONS = 3
 
 def initialise_default_scene():
     #Initialise objects
-    center = Vector3(0, 0, -10)
+    center = Vector3(1024/2, 768/2, -10)
     radius = 4 
     color = (0, 0, 1)
     
     sphere1 = Sphere(center, radius, color)
     
-    center = Vector3(0, 4, -8)
+    center = Vector3(1024/2, 768/2 + 4, -8)
     radius = 6 
     color = (0, 1, 1)
     
