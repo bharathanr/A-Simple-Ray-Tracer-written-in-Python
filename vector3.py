@@ -10,7 +10,7 @@ class Vector3(object):
                             kargs.get('components'))
         elif params:
             if len(params) == 3:
-                self.components = array([0, 1, 2])
+                self.components = array([0, 1, 2], "d")
                 for i,p in enumerate(params):
                     self.components[i] = p
             else:
@@ -65,7 +65,7 @@ class Vector3(object):
 
     #Operators
     def __neg__(self):
-        self.components = -self.components
+        return Vector3(components = -self.components)
         #No need to reset magnitude
 
     def __add__(self, other):
