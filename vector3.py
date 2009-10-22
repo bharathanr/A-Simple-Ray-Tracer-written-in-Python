@@ -81,6 +81,11 @@ class Vector3(object):
         #Garbage warning
         return Vector3(components = self.components *  other)
 
+    def __div__(self, other):
+        #Watch out. This operation can be unsafe
+        #Garbage warning
+        return Vector3(components = self.components /  other)
+    
     def __str__(self):
         return (('Magnitude:%f Components:' % \
                 self.magnitude) +\
@@ -108,5 +113,5 @@ if __name__ == "__main__":
     print v.magnitude
     print dot_product(UNIT_X, UNIT_Y)
     print cross_product(UNIT_Y, UNIT_Z).components
-    print UNIT_X * 3
+    print UNIT_X / 0.1
 
