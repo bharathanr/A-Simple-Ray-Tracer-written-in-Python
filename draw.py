@@ -46,7 +46,7 @@ def render(ray_buffer = []):
             print "100% complete..."
            
         for y in range(height):
-            primary_ray = Ray(Vector3(x, y, 0), -UNIT_Z)
+            primary_ray = Ray(Vector3(0, 0, 0), -UNIT_Z)
             #primary_ray = ray_buffer[x * height + y]
             color = ray_trace(primary_ray)
             image_buf.append(clamp(color))
