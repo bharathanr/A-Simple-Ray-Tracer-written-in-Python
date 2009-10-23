@@ -1,7 +1,7 @@
 from numpy import array, cross
 
 from save_image import save_bmpOrtho
-from scene import IMAGE_SIZE, initialise_default_scene
+from sceneOrtho import IMAGE_SIZE, initialise_default_scene
 from ray_trace import ray_trace
 from ray import Ray
 from vector3 import Vector3, UNIT_Z
@@ -20,7 +20,7 @@ def generate_rays():
     direct = -UNIT_Z
     for x in range(IMAGE_SIZE[0]):
         for y in range(IMAGE_SIZE[1]):
-            ray = Ray(Vector3(x, y, 1000), direct)
+            ray = Ray(Vector3(x, y, 10), direct)
             rays.append(ray)
     return rays
 

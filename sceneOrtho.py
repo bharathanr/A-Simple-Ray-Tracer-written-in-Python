@@ -32,13 +32,13 @@ MAX_RECURSIONS = 3
 
 def initialise_default_scene():
     #Initialise objects
-    center = Vector3(0, 0, -130)
+    center = Vector3(1024/2, 768/2, -13)
     radius = 20 
     color = (0, 0, 1)
     
     sphere1 = Sphere(center, radius, color)
     
-    center2 = Vector3(0, 0, -100)
+    center2 = Vector3(1024/2, 768/2, -10)
     radius2 = 20 
     color2 = (1, 0, 1)
     
