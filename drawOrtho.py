@@ -1,6 +1,6 @@
 from numpy import array, cross
 
-from save_image import save_bmp
+from save_image import save_bmpOrtho
 from scene import IMAGE_SIZE, initialise_default_scene
 from ray_trace import ray_trace
 from ray import Ray

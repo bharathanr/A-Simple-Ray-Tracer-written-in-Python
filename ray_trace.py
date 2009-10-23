@@ -10,7 +10,7 @@ def ray_trace(original_ray):
     return point_color
 
 def get_first_intersection(ray):
-   closest_intersection_distance = 10000.0
+   closest_intersection_distance = 100000000.0
    closest_intersected_object = None
    for obj in objects:
         result = obj.find_intersection(ray)
