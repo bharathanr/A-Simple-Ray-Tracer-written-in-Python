@@ -50,8 +50,8 @@ def generate_rays():
     rays = []
     v_step = 2.0 / VRES
     h_step = 2.0 * aspect_ratio / HRES
-    for x in range(HRES):
-        for y in range(VRES):
+    for x in xrange(HRES):
+        for y in xrange(VRES):
             p = ll + v * h_step * float(x)  + u * v_step * float(y)
             d = p - eye
             d.normalise()
@@ -65,7 +65,7 @@ def render(ray_buffer = []):
     height = IMAGE_SIZE[1]
     width = IMAGE_SIZE[0]
     image_buf = []
-    for x in range(width):
+    for x in xrange(width):
         if x == (width * 0.25): 
             print "25% complete..."
           
@@ -78,7 +78,7 @@ def render(ray_buffer = []):
         if x == (width - 1): 
             print "100% complete..."
            
-        for y in range(height):
+        for y in xrange(height):
             primary_ray = ray_buffer[x * height + y]
             color = ray_trace(primary_ray)
             image_buf.append(clamp(color))
