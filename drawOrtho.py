@@ -20,7 +20,7 @@ def generate_rays():
     direct = -UNIT_Z
     for x in range(IMAGE_SIZE[0]):
         for y in range(IMAGE_SIZE[1]):
-            ray = Ray(Vector3(x, y, 10), direct)
+            ray = Ray(Vector3(x, y, 1000), direct)
             rays.append(ray)
     return rays
 

@@ -33,18 +33,18 @@ MAX_RECURSIONS = 3
 def initialise_default_scene():
     #Initialise objects
     center = Vector3(1024/2, 768/2, -13)
-    radius = 20 
+    radius = 6
     color = (0, 0, 1)
     
     sphere1 = Sphere(center, radius, color)
     
-    center2 = Vector3(1024/2, 768/2, -10)
-    radius2 = 20 
-    color2 = (1, 0, 1)
+    #center2 = Vector3(1024/2, 768/2, -10)
+    #radius2 = 20 
+    #color2 = (1, 0, 1)
     
-    sphere2 = Sphere(center2, radius2, color2)
+    #sphere2 = Sphere(center2, radius2, color2)
     globs = globals()
     #Add the objects to the object list
     globs['objects'].append(sphere1)
 
-    globs['objects'].append(sphere2)
+    #globs['objects'].append(sphere2)
