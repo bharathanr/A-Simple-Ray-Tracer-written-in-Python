@@ -21,10 +21,10 @@ def generate_rays():
     HRES = IMAGE_SIZE[0]
     VRES = IMAGE_SIZE[1]
     
-    aspect_ratio = HRES / VRES
+    aspect_ratio = float(HRES) / VRES
 
     #Camera parameters to be abstracted away later
-    fovy = 45 * (pi / 180)
+    fovy = 45.0 * (pi / 180.0)
     #UNIT_Y is up
     eye = Vector3(0, 0, 0)
     look_at = Vector3(0, 0, -10)
@@ -46,16 +46,13 @@ def generate_rays():
     #look_at is the center of the image plane...
     ll = eye +  l * d - v * aspect_ratio   - u
     #End calculations
-    
-    #Debug
-    print ll
-    
+        
     rays = []
-    v_step = 2 * aspect_ratio / VRES
-    h_step = 2 / HRES
+    v_step = 2.0 / VRES
+    h_step = 2.0 * aspect_ratio / HRES
     for x in range(HRES):
         for y in range(VRES):
-            p = ll + v * 2 * aspect_ratio * float(x) / HRES  + u * 2 * float(y) / VRES
+            p = ll + v * h_step * float(x)  + u * v_step * float(y)
             d = p - eye
             d.normalise()
             ray = Ray(eye, d)
