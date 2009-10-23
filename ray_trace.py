@@ -1,4 +1,4 @@
-from scene import objects, lights, BGCOLOR
+from sceneOrtho import objects, lights, BGCOLOR
 
 def ray_trace(original_ray):
     obj = get_first_intersection(original_ray)
