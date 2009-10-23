@@ -31,7 +31,7 @@ def render(ray_buffer = []):
     width = IMAGE_SIZE[0]
     image_buf = []
     for x in range(width):
-        if x == (width * 0.4): 
+        if x == (width * 0.25): 
             print "25% complete..."
           
         if x == (width * 0.5): 
@@ -52,7 +52,7 @@ def render(ray_buffer = []):
 def main():
     initialise_default_scene()
     buf = render(generate_rays())
-    save_bmp("QuestWorld", buf, (1024, 768))
+    save_bmpOrtho("QuestWorldOrtho", buf, (1024, 768))
 
 if __name__== '__main__':
     main()
