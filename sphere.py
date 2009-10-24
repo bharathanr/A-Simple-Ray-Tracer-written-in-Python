@@ -9,23 +9,24 @@ class Sphere(Primitive):
         self.center = center
         self.radius = float(radius)
     
-    def find_intersection(self, ray):
-        pass
-
-    def find_intersectionOld(self, ray):
+    def find_intersectionWorking(self, ray):
         result = [0, False]
-        eo = self.center - ray.origin
-        v = dot_product(eo, ray.direction)
-        discriminant = (self.radius * self.radius) - (dot_product(eo, eo) - v * v)
-        if discriminant < 0:
+        dist = self.center - ray.direction
+        B = float(dot_product(ray.direction, dist))
+        D = B * B - dot_product(dist, dist) + self.radius * self.radius
+        if D < 0.0:
             return result
-        else:
-            d = sqrt(discriminant)
+        t0 = B - sqrt(D)
+        t1 = B + sqrt(D)
+        if t0 > 0.1:
+            result[0] = t0
             result[1] = True
-            result[0] = d
-            return result
+        if t1 < 0.1:
+            result[0] = t1
+            result[1] = True
+        return result
 
-    def find_intersectionLesson1(self, ray):
+    def find_intersection(self, ray):
         result = [0, False]
         #Ray to sphere direction
         oc = self.center - ray.origin
@@ -54,7 +55,7 @@ class Sphere(Primitive):
                 return result
             
             result[1] = True
-            result[0] = sqrt(thc)
+            result[0] = temp
             return result
     
     def __str__(self):
