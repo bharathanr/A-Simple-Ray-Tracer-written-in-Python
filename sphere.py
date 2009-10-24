@@ -40,7 +40,10 @@ class Sphere(Primitive):
             result[1] = True
             result[0] = temp
             return result
-    
+
+    def get_normal(self, point):
+        return point - self.center
+
     def __str__(self):
         return 'S' + ' ' + str(self.center) + ' ' + str(self.radius)
 
@@ -50,6 +53,7 @@ if __name__ == "__main__":
     radius = 4 
     color = (0, 0, 1)
     sph1 = Sphere(center, radius, color)
+    print "N", sph1.get_normal(Vector3(0, 0, -6))
     #print sph1.radius, sph1.center, sph1.color
     from ray import Ray
     ray_origin = origin = Vector3(0, 0, 0)
