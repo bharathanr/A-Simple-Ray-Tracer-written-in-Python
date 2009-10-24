@@ -9,6 +9,7 @@
 
 from numpy import array
 
+from light import Light
 from sphere import Sphere
 from plane import Plane
 from vector3 import Vector3, UNIT_Y
@@ -32,8 +33,17 @@ IMAGE_SIZE = (1024, 768)
 MAX_RECURSIONS = 3
 
 def initialise_default_scene():
+    #Initialise Lights
+    position = Vector3(0, 50, -100)
+    color = (1, 1, 1)
+
+    light1 = Light(position, color)
+
+    position2 = Vector3(0, 0, -100)
+    color2 = (1, 1, 1)
+
+    light2 = Light(position2, color2)
     #Initialise objects
-    
     #Object 1
     center = Vector3(-30, 10, -130)
     radius = 10 
@@ -54,7 +64,10 @@ def initialise_default_scene():
 
     globs = globals()
     #Add the objects to the object list
-
     globs['objects'].append(sphere2)
     globs['objects'].append(sphere1)
     globs['objects'].append(plane1)
+    
+    #Add lights to the light list
+    globs['lights'].append(light1)
+    globs['lights'].append(light2)
