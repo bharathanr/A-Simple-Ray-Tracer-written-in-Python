@@ -12,6 +12,7 @@ from numpy import array
 from light import Light
 from sphere import Sphere
 from plane import Plane
+from material import material
 from vector3 import Vector3, UNIT_Y
 
 #Description of the scene
@@ -35,32 +36,35 @@ MAX_RECURSIONS = 3
 def initialise_default_scene():
     #Initialise Lights
     position = Vector3(0, 50, -100)
-    color = (1, 1, 1)
+    l_color = (1, 1, 1)
 
-    light1 = Light(position, color)
+    light1 = Light(position, l_color)
 
     position2 = Vector3(0, 0, -100)
-    color2 = (1, 1, 1)
+    l_color2 = (1, 1, 1)
 
-    light2 = Light(position2, color2)
+    light2 = Light(position2, l_color2)
     #Initialise objects
     #Object 1
     center = Vector3(-30, 10, -130)
     radius = 10 
     color = (0, 0, 1)
-    sphere1 = Sphere(center, radius, color)
+    mat1 = Material(color)
+    sphere1 = Sphere(center, radius, mat1)
     
     #Object2
     center2 = Vector3(0, 20, -100)
     radius2 = 10 
     color2 = (1, 0, 1)
-    sphere2 = Sphere(center2, radius2, color2)
+    mat2 = Material(color2)
+    sphere2 = Sphere(center2, radius2, mat2)
 
     #Object3: Ground plane
     normal = UNIT_Y
     distance = 2
     color3 = (0, 1, 1)
-    plane1 = Plane(normal, distance, color3)
+    mat3 = Material(color)
+    plane1 = Plane(normal, distance, mat3)
 
     globs = globals()
     #Add the objects to the object list

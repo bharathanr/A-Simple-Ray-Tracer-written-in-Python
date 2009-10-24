@@ -1,7 +1,7 @@
 class Primitive(object):
-    def __init__(self, color):
+    def __init__(self, material):
         super(Primitive, self).__init__()
-        self.color = color
+        self.material = material
 
     def intersection(ray):
         raise NotImplementedError

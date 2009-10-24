@@ -4,8 +4,8 @@ from primitive import Primitive
 from vector3 import dot_product
 
 class Sphere(Primitive):
-    def __init__(self, center, radius, color):
-        super(Sphere, self).__init__(color)
+    def __init__(self, center, radius, material):
+        super(Sphere, self).__init__(material)
         self.center = center
         self.radius = float(radius)
     

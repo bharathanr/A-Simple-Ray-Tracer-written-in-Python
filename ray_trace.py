@@ -9,7 +9,7 @@ def ray_trace(original_ray):
     if obj is not None:
         point = original_ray.origin + original_ray.direction * dist
         normal = obj.get_normal(point)
-        point_color = lambert_light(point, normal, obj.color)
+        point_color = lambert_light(point, normal, obj.material)
     else:
         point_color = BGCOLOR
     
@@ -26,15 +26,18 @@ def get_first_intersection(ray):
                 closest_intersection_distance = result[0]
    return (closest_intersected_object, closest_intersection_distance)
 
-def lambert_light(point, normal, color):
-    diffuse_coefficient = 0.8
+def lambert_light(point, normal, material):
+    diffuse_coefficient = 1 
     point_color = [0, 0, 0]
+    color = material.diffuse_color
+    normal.normalise()
     for light in lights:
         light_vector = light.position - point
+        light_vector.normalise()
         shade = dot_product(light_vector, normal)
         if shade < 0:
             shade = 0
         for i in range(len(point_color)):
-            point_color[i] += color[i] * (0.2 + diffuse_coefficient * shade)
+            point_color[i] += color[i] * (diffuse_coefficient * shade)
     
     return point_color

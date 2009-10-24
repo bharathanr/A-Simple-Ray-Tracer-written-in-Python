@@ -4,11 +4,11 @@ from primitive import Primitive
 from vector3 import dot_product
 
 class Plane(Primitive):
-    def __init__(self, normal, distance, color):
+    def __init__(self, normal, distance, material):
         #normal is the normal to the plane
         #distance is the perpendicular distance 
         #of the plane from the world origin
-        super(Plane, self).__init__(color)
+        super(Plane, self).__init__(material)
 
         self.normal = normal
         self.distance = float(distance)
