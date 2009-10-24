@@ -1,3 +1,5 @@
+from math import fabs
+
 #from sceneOrtho import objects, lights, BGCOLOR
 from scene import objects, lights, BGCOLOR
 from vector3 import dot_product
@@ -34,10 +36,9 @@ def lambert_light(point, normal, material):
     for light in lights:
         light_vector = light.position - point
         light_vector.normalise()
-        shade = dot_product(light_vector, normal)
-        if shade < 0:
-            shade = 0
+        shade = fabs(dot_product(light_vector, normal))
         for i in range(len(point_color)):
-            point_color[i] += color[i] * (diffuse_coefficient * shade)
+            point_color[i] += light.color[i] * color[i] * diffuse_coefficient * shade \
+                    
     
     return point_color

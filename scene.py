@@ -12,7 +12,7 @@ from numpy import array
 from light import Light
 from sphere import Sphere
 from plane import Plane
-from material import material
+from material import Material
 from vector3 import Vector3, UNIT_Y
 
 #Description of the scene
