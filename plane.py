@@ -4,11 +4,11 @@ from primitive import Primitive
 from vector3 import dot_product
 
 class Plane(Primitive):
-    def __init__(self, normal, distance):
+    def __init__(self, normal, distance, color):
         #normal is the normal to the plane
         #distance is the perpendicular distance 
         #of the plane from the world origin
-        super(Plane, self).__init__()
+        super(Plane, self).__init__(color)
 
         self.normal = normal
         self.distance = float(distance)
@@ -27,8 +27,8 @@ class Plane(Primitive):
             return result
 
         result[1] = True
-        result[0] = intersect_dist
+        result[0] = intersectDist
         return result
 
     def get_normal(self, point):
-        return -self.normal
+        return self.normal
