@@ -45,6 +45,6 @@ def initialise_default_scene():
     sphere2 = Sphere(center2, radius2, color2)
     globs = globals()
     #Add the objects to the object list
-    globs['objects'].append(sphere1)
 
     globs['objects'].append(sphere2)
+    globs['objects'].append(sphere1)

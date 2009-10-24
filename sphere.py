@@ -3,16 +3,29 @@ from math import sqrt
 from primitive import Primitive
 from vector3 import dot_product
 
-DEBUG = 0 
-
 class Sphere(Primitive):
     def __init__(self, center, radius, color):
         super(Sphere, self).__init__(color)
         self.center = center
-        self.radius = radius
-
+        self.radius = float(radius)
+    
     def find_intersection(self, ray):
-        #From : http://www.cs.unc.edu/~rademach/xroads-RT/RTarticle.html
+        pass
+
+    def find_intersectionOld(self, ray):
+        result = [0, False]
+        eo = self.center - ray.origin
+        v = dot_product(eo, ray.direction)
+        discriminant = (self.radius * self.radius) - (dot_product(eo, eo) - v * v)
+        if discriminant < 0:
+            return result
+        else:
+            d = sqrt(discriminant)
+            result[1] = True
+            result[0] = d
+            return result
+
+    def find_intersectionLesson1(self, ray):
         result = [0, False]
         #Ray to sphere direction
         oc = self.center - ray.origin
@@ -20,34 +33,32 @@ class Sphere(Primitive):
         oc2 = dot_product(oc, oc)
         #Distance to the sphere along the ray
         #In other words, the point on the ray closest to the center
-        v = dot_product(oc, ray.direction)
-        
-        #DEBUG
-        #print oc2, v
-        
+        tca = float(dot_product(oc, ray.direction))
+     
         #Is the ray origin outside the sphere?
         outside = oc2 > (self.radius ** 2)
-        if v < 0 and outside:
-            if DEBUG == 1:
-                print "ping"
+       
+        if tca < 0.0 and outside:
             return result
-        discriminant = (self.radius * self.radius) - (oc2 - v*v)
-        if discriminant < 0:
-            if DEBUG == 1:
-                print "pong"
+        d2 = oc2 - tca * tca
+        thc = (self.radius * self.radius) - d2
+        if thc < 0.0:
             return result
         else:
             if outside:
-                temp = v - sqrt(discriminant)
+                temp = tca - sqrt(thc)
             else:
-                temp = v + sqrt(discriminant)
+                temp = tca + sqrt(thc)
 
-            if temp < 0:
+            if temp < 0.0:
                 return result
             
             result[1] = True
-            result[0] = sqrt(discriminant)
+            result[0] = sqrt(thc)
             return result
+    
+    def __str__(self):
+        return 'S' + ' ' + str(self.center) + ' ' + str(self.radius)
 
 if __name__ == "__main__":
     from vector3 import *
@@ -59,7 +70,7 @@ if __name__ == "__main__":
     from ray import Ray
     ray_origin = origin = Vector3(0, 0, 0)
     #print origin
-    ray_direction = (Vector3(0, 3, -10) - origin)
+    ray_direction = (Vector3(0, 4, -10) - origin)
     #print ray_direction
     r1 = Ray(ray_origin, ray_direction)
     print sph1.find_intersection(r1)

@@ -1,4 +1,7 @@
-from sceneOrtho import objects, lights, BGCOLOR
+#from sceneOrtho import objects, lights, BGCOLOR
+from scene import objects, lights, BGCOLOR
+
+DEBUG = 1
 
 def ray_trace(original_ray):
     obj = get_first_intersection(original_ray)
@@ -18,6 +21,5 @@ def get_first_intersection(ray):
             if result[0] < closest_intersection_distance:
                 closest_intersected_object = obj
                 closest_intersection_distance = result[0]
-
    return closest_intersected_object
 
