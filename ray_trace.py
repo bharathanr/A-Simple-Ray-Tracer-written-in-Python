@@ -1,4 +1,4 @@
-from math import fabs
+from math import fabs, pow
 
 #from sceneOrtho import objects, lights, BGCOLOR
 from scene import objects, lights, BGCOLOR
@@ -9,7 +9,7 @@ def ray_trace(original_ray):
     if obj is not None:
         point = original_ray.origin + original_ray.direction * dist
         normal = obj.get_normal(point)
-        point_color = lambert_light(point, normal, obj.material)
+        point_color = phong_light(point, normal, original_ray.direction, obj.material)
     else:
         point_color = BGCOLOR
     
@@ -41,6 +41,7 @@ def lambert_light(point, normal, material):
         for i in range(len(point_color)):
             point_color[i] += light.color[i] * color[i] * diffuse_coefficient *\
                     shade + color[i] * ambient_coefficient
-                    
-    
+    return point_color
+
+def phong_light(point, normal, ray, material):
     return point_color

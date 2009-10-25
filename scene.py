@@ -63,7 +63,7 @@ def initialise_default_scene():
     normal = UNIT_Y
     distance = 2
     color3 = (0, 1, 1)
-    mat3 = Material(color)
+    mat3 = Material(color3)
     plane1 = Plane(normal, distance, mat3)
 
     globs = globals()
@@ -74,4 +74,4 @@ def initialise_default_scene():
     
     #Add lights to the light list
     globs['lights'].append(light1)
-    globs['lights'].append(light2)
+    #globs['lights'].append(light2)
