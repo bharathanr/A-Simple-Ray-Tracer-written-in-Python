@@ -4,8 +4,6 @@ from math import fabs
 from scene import objects, lights, BGCOLOR
 from vector3 import dot_product
 
-DEBUG = 1
-
 def ray_trace(original_ray):
     obj, dist = get_first_intersection(original_ray)
     if obj is not None:
@@ -30,15 +28,19 @@ def get_first_intersection(ray):
 
 def lambert_light(point, normal, material):
     diffuse_coefficient = 1 
+    ambient_coefficient = 0.2
     point_color = [0, 0, 0]
     color = material.diffuse_color
     normal.normalise()
     for light in lights:
         light_vector = light.position - point
         light_vector.normalise()
-        shade = fabs(dot_product(light_vector, normal))
+        shade = dot_product(light_vector, normal)
+        if shade < 0:
+            shade = 0
         for i in range(len(point_color)):
-            point_color[i] += light.color[i] * color[i] * diffuse_coefficient * shade \
+            point_color[i] += light.color[i] * color[i] * diffuse_coefficient *\
+                    shade + color[i] * ambient_coefficient
                     
     
     return point_color

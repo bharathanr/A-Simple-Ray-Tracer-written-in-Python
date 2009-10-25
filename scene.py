@@ -40,7 +40,7 @@ def initialise_default_scene():
 
     light1 = Light(position, l_color)
 
-    position2 = Vector3(0, 0, -100)
+    position2 = Vector3(0, 10, -130)
     l_color2 = (1, 1, 1)
 
     light2 = Light(position2, l_color2)
