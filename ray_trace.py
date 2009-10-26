@@ -56,12 +56,12 @@ def phong_light(point, normal, eye, material):
         light_vector.normalise()
         view_vector.normalise()
         #Diffuse coefficient Kd 
-        k_d = 1.0
+        k_d = 1
         diffuse = dot_product(normal, light_vector)
         if diffuse < 0:
             diffuse = 0
         #Specular coefficient Ks
-        k_s = 1.0
+        k_s = 1
         reflect= normal * 2.0 * diffuse - light_vector
         reflect.normalise()
         dp = max(dot_product(view_vector, light_vector), 0.0)
