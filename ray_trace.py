@@ -63,10 +63,12 @@ def phong_light(point, normal, eye, material):
         #Specular coefficient Ks
         k_s = 1.0
         reflect= normal * 2.0 * diffuse - light_vector
-        specular = pow(dot_product(view_vector, light_vector), 64)
+        reflect.normalise()
+        dp = max(dot_product(view_vector, light_vector), 0.0)
+        specular = pow(dp, material.specular_power)
         i = 0 
-        while i<3:
-            point_color[i] = ambient_coefficient * a_color[i] + k_d * color[i] * diffuse\
+        while i < 3:
+            point_color[i] += ambient_coefficient * a_color[i] + k_d * color[i] * diffuse\
                     + k_s * s_color[i] * specular
             i += 1
     return point_color
