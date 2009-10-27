@@ -15,8 +15,7 @@ def ray_trace(original_ray):
     
     return point_color
 
-def get_first_intersection(ray):
-   closest_intersection_distance = 100000000.0
+def get_first_intersection(ray, closest_intersection_distance = 100000000.0 ):
    closest_intersected_object = None
    for obj in objects:
         result = obj.find_intersection(ray)
@@ -43,32 +42,56 @@ def lambert_light(point, normal, material):
     return point_color
 
 def phong_light(point, normal, eye, material):
-    normal.normalise()
+    #A variable to store the final color
     point_color = [0, 0, 0]
+    #The ambient, diffuse and specular color of the material
     a_color = material.diffuse_color
     color = material.diffuse_color
     s_color = material.specular_color
+    #Ensure that the normal is normalised
+    normal.normalise()
+    #The ambient coefficient ka
     ambient_coefficient = 0.2
+    #Diffuse coefficient Kd 
+    k_d = 1
+    #Specular coefficient Ks
+    k_s = 1
+    #Perform ambient lighting
     i =0 
     while i < 3:
         point_color[i] = ambient_coefficient * a_color[i]
         i += 1
+    #For each light, compute the contribution to color
     for light in lights:
+        #Calculate the light vector
         light_vector = light.position - point
-        view_vector = eye - point
+        #Calculate the distance to the light
+        dist = light_vector.magnitude
+        #Then normalise it
         light_vector.normalise()
+
+        #Calculate the view vector
+        view_vector = eye - point
         view_vector.normalise()
-        #Diffuse coefficient Kd 
-        k_d = 1
-        diffuse = dot_product(normal, light_vector)
-        if diffuse < 0:
-            diffuse = 0
-        #Specular coefficient Ks
-        k_s = 1
+        
+        #Compute the shadow ray
+        shadow_ray = Ray(point + light_vector * 0.001, light_vector)
+        #Check if there is an object in the way of the shadow ray
+        obj = get_first_intersection(shadow_ray, dist)
+        #If there is an object, this lights contribution isn't added
+        if obj[0] is not None:
+            continue;
+
+        #Else, light it up!
+        #Calculate the diffuse lighting
+        diffuse = max(dot_product(normal, light_vector), 0.0)
+        #Calculate the reflected ray
         reflect= normal * 2.0 * diffuse - light_vector
         reflect.normalise()
+        #Calculate the specular lighting
         dp = max(dot_product(view_vector, light_vector), 0.0)
         specular = pow(dp, material.specular_power)
+        #Add this lights contribution to each component of the color
         i = 0 
         while i < 3:
             point_color[i] += k_d * color[i] * diffuse\
