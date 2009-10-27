@@ -35,12 +35,12 @@ MAX_RECURSIONS = 3
 
 def initialise_default_scene():
     #Initialise Lights
-    position = Vector3(-30, 30, -50)
+    position = Vector3(-30, 20, -50)
     l_color = (1, 1, 1)
 
     light1 = Light(position, l_color)
 
-    position2 = Vector3(-30, 20, -80)
+    position2 = Vector3(-10, 20, -80)
     l_color2 = (1, 1, 1)
 
     light2 = Light(position2, l_color2)

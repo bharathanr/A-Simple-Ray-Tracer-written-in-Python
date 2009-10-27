@@ -5,15 +5,31 @@ from scene import objects, lights, BGCOLOR
 from vector3 import dot_product
 from ray import Ray
 
-def ray_trace(original_ray):
+def ray_trace(original_ray, r_level = 3):
     obj, dist = get_first_intersection(original_ray)
     if obj is not None:
         point = original_ray.origin + original_ray.direction * dist
         normal = obj.get_normal(point)
         point_color = phong_light(point, normal, original_ray.origin, obj.material)
+        if r_level > 0:
+            #if the object is reflective
+            if obj.material.reflect != 0:
+                #Calculate the reflected ray
+                normal.normalise()
+                reflect_direction = original_ray.direction - normal * 2.0 * \
+                     dot_product(original_ray.direction, normal)
+                reflect_direction.normalise()
+                reflected_ray = Ray(point + reflect_direction * 0.0001, reflect_direction)
+                #Recursively ray-trace
+                r_color = ray_trace(reflected_ray, r_level - 1)
+                #Add the reflect color
+                i =0 
+                while i < 3:
+                    point_color[i] += obj.material.reflect * r_color[i]
+                    i += 1
+            
     else:
         point_color = BGCOLOR
-    
     return point_color
 
 def get_first_intersection(ray, closest_intersection_distance = 100000000.0):
