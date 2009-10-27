@@ -21,7 +21,7 @@ class Sphere(Primitive):
      
         #Is the ray origin outside the sphere?
         outside = oc2 > (self.radius ** 2)
-       
+    
         if tca < 0.0 and outside:
             return result
         d2 = oc2 - tca * tca

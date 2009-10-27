@@ -74,4 +74,4 @@ def initialise_default_scene():
     
     #Add lights to the light list
     globs['lights'].append(light1)
-    #globs['lights'].append(light2)
+    globs['lights'].append(light2)

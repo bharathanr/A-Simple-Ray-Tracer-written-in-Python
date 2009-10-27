@@ -28,7 +28,6 @@ def get_first_intersection(ray):
 
 def lambert_light(point, normal, material):
     diffuse_coefficient = 1 
-    ambient_coefficient = 0.2
     point_color = [0, 0, 0]
     color = material.diffuse_color
     normal.normalise()
@@ -40,7 +39,7 @@ def lambert_light(point, normal, material):
             shade = 0
         for i in range(len(point_color)):
             point_color[i] += light.color[i] * color[i] * diffuse_coefficient *\
-                    shade + color[i] * ambient_coefficient
+                    shade
     return point_color
 
 def phong_light(point, normal, eye, material):
@@ -50,6 +49,10 @@ def phong_light(point, normal, eye, material):
     color = material.diffuse_color
     s_color = material.specular_color
     ambient_coefficient = 0.2
+    i =0 
+    while i < 3:
+        point_color[i] = ambient_coefficient * a_color[i]
+        i += 1
     for light in lights:
         light_vector = light.position - point
         view_vector = eye - point
@@ -68,7 +71,7 @@ def phong_light(point, normal, eye, material):
         specular = pow(dp, material.specular_power)
         i = 0 
         while i < 3:
-            point_color[i] += ambient_coefficient * a_color[i] + k_d * color[i] * diffuse\
+            point_color[i] += k_d * color[i] * diffuse\
                     + k_s * s_color[i] * specular
             i += 1
     return point_color
