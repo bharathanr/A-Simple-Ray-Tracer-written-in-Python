@@ -46,19 +46,17 @@ def initialise_default_scene():
     light2 = Light(position2, l_color2)
     #Initialise objects
     #Object 1
-    center = Vector3(0, 5, -50)
+    center = Vector3(0, 0, -100)
     radius = 4 
     color = (0, 0, 1)
-    mat1 = Material(color)
+    mat1 = Material(color, reflect = 0)
     sphere1 = Sphere(center, radius, mat1)
-    
     #Object2
-    center2 = Vector3(-30, 20, -100)
+    center2 = Vector3(0, 10, -150)
     radius2 = 10 
     color2 = (0.5, 0, 0.5)
-    mat2 = Material(color2)
+    mat2 = Material(color2, refract = 0)
     sphere2 = Sphere(center2, radius2, mat2)
-
     #Object3: Ground plane
     normal = UNIT_Y
     distance = 2

@@ -1,4 +1,4 @@
-from math import fabs, pow
+from math import fabs, pow, sqrt
 
 #from sceneOrtho import objects, lights, BGCOLOR
 from scene import objects, lights, BGCOLOR
@@ -23,32 +23,36 @@ def ray_trace(original_ray, r_level = 3):
                 #Recursively ray-trace
                 r_color = ray_trace(reflected_ray, r_level - 1)
                 #Add the reflect color
-                i =0 
+                i = 0 
                 while i < 3:
-                    point_color[i] += 0.5 * obj.material.reflect * r_color[i]
+                    point_color[i] += obj.material.reflect * r_color[i]
                     i += 1
             
             #if the object is refractive
+            #print obj.material.reflect, obj.material.refract
             if obj.material.refract != 0:
                 #Calculate the refracted ray
                 normal.normalise()
+                I = original_ray.origin - point
+                I.normalise()
                 #n1 = 1 n2 = object!
                 n = 1.0 / obj.material.refract
-                cost1 = dot_product(original_ray, normal)
+                cost1 = dot_product(I, normal)
                 #Trying to handle total internal reflection
                 try:
-                    cost2 = sqrt(1.0 - (n*n)(1 - cost1 * cost1))
+                    cost2 = sqrt(1.0 - (n * n) * (1 - cost1 * cost1))
                 except ValueError:
-                    continue
-                refract_direction = original_ray * n + normal * (cost2 - n * cost1)
+                    print "Error"
+                refract_direction = I * n + normal * (cost2 - n * cost1)
                 refract_direction.normalise()
-                refracted_ray = Ray(point + refract_direction * 0.0001, refract_direction)
+                refracted_ray = Ray(point - refract_direction * 0.001, refract_direction)
                 #Recursively ray-trace
-                r_color = ray_trace(refracted_aray, r_level - 1)
-                #Add the reflect color
-                i =0 
+                r_color = ray_trace(refracted_ray, r_level - 1)
+                #Add the refract color
+                i = 0 
                 while i < 3:
-                    point_color[i] += 0.5 * obj.material.reflect * r_color[i]
+                    #I've not used the fresnel term
+                    point_color[i] = r_color[i]
                     i += 1
             
     else:
