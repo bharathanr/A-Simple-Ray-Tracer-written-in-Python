@@ -7,6 +7,8 @@ from ray import Ray
 
 def ray_trace(original_ray, r_level = 3):
     obj, dist = get_first_intersection(original_ray)
+    reflect_color = [0, 0, 0]
+    refract_color = [0, 0, 0]
     if obj is not None:
         point = original_ray.origin + original_ray.direction * dist
         normal = obj.get_normal(point)
@@ -14,50 +16,30 @@ def ray_trace(original_ray, r_level = 3):
         if r_level > 0:
             #if the object is reflective
             if obj.material.reflect != 0:
-                #Calculate the reflected ray
-                normal.normalise()
-                reflect_direction = original_ray.direction - normal * 2.0 * \
-                     dot_product(original_ray.direction, normal)
-                reflect_direction.normalise()
-                reflected_ray = Ray(point + reflect_direction * 0.0001, reflect_direction)
-                #Recursively ray-trace
-                r_color = ray_trace(reflected_ray, r_level - 1)
-                #Add the reflect color
-                i = 0 
-                while i < 3:
-                    point_color[i] += obj.material.reflect * r_color[i]
-                    i += 1
-            
-            #if the object is refractive
-            #print obj.material.reflect, obj.material.refract
-            if obj.material.refract != 0:
-                #Calculate the refracted ray
-                normal.normalise()
-                I = original_ray.origin - point
-                I.normalise()
-                #n1 = 1 n2 = object!
-                n = 1.0 / obj.material.refract
-                cost1 = dot_product(I, normal)
-                #Trying to handle total internal reflection
-                try:
-                    cost2 = sqrt(1.0 - (n * n) * (1 - cost1 * cost1))
-                except ValueError:
-                    print "Error"
-                refract_direction = I * n + normal * (cost2 - n * cost1)
-                refract_direction.normalise()
-                refracted_ray = Ray(point - refract_direction * 0.001, refract_direction)
-                #Recursively ray-trace
-                r_color = ray_trace(refracted_ray, r_level - 1)
-                #Add the refract color
-                i = 0 
-                while i < 3:
-                    #I've not used the fresnel term
-                    point_color[i] = r_color[i]
-                    i += 1
-            
+               #Recursively ray-trace
+                reflect_color = ray_trace(get_reflected_ray(original_ray,\
+                        point, normal), r_level - 1)
+            if object.material.refract !=0:
+                #refract_color = ray_trace(get_refracted_ray(original_ray, obj), r_level - 1)
+                pass
+        #Combine colors
+        i = 0
+        while i < 3:
+            point_color[i] += reflect_color[i] + refract_color[i]
+            i += 1
     else:
         point_color = BGCOLOR
+
     return point_color
+
+def get_reflected_ray(original_ray, point, normal):
+    #Calculate the reflected ray
+    normal.normalise()
+    reflect_direction = original_ray.direction - normal * 2.0 * \
+    dot_product(original_ray.direction, normal)
+    reflect_direction.normalise()
+    reflected_ray = Ray(point + reflect_direction * 0.0001, reflect_direction)
+    return reflected_ray
 
 def get_first_intersection(ray, closest_intersection_distance = 100000000.0):
    closest_intersected_object = None
