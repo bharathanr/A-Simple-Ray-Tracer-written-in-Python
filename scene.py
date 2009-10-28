@@ -46,8 +46,8 @@ def initialise_default_scene():
     light2 = Light(position2, l_color2)
     #Initialise objects
     #Object 1
-    center = Vector3(0, 0, -100)
-    radius = 4 
+    center = Vector3(0, 10, -100)
+    radius = 14 
     color = (0, 0, 1)
     mat1 = Material(color, reflect = 0)
     sphere1 = Sphere(center, radius, mat1)
