@@ -5,7 +5,7 @@ from scene import objects, lights, BGCOLOR
 from vector3 import dot_product
 from ray import Ray
 
-def ray_trace(original_ray, r_level = 3):
+def ray_trace(original_ray, r_level = 3, ref_index = 1.0):
     obj, dist = get_first_intersection(original_ray)
     reflect_color = [0, 0, 0]
     refract_color = [0, 0, 0]
@@ -21,7 +21,7 @@ def ray_trace(original_ray, r_level = 3):
                         point, - normal), r_level - 1)
             if obj.material.refract !=0:
                 refract_color = ray_trace(get_refracted_ray(original_ray,\
-                        point, normal, obj), r_level - 1)
+                        point, normal, obj), r_level - 1, obj.material.refractive_index)
         #Combine colors
         kr = obj.material.reflect
         i = 0
@@ -33,8 +33,8 @@ def ray_trace(original_ray, r_level = 3):
 
     return point_color
 
-def get_refracted_ray(ray, point, normal, obj):
-    #n = n1 / n2 and n1 = 1 for air
+def get_refracted_ray(ray, point, normal, obj, ref_index):
+    #n = n1 / n2 and n1 = ref_index
     n = 1.0 / obj.material.refract
     cost1 = dot_product(ray.direction, normal)
     cost2 = sqrt(1.0 - ((n * n) * (1.0 - (cost1 * cost1))))
