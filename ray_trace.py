@@ -23,9 +23,10 @@ def ray_trace(original_ray, r_level = 3):
                 refract_color = ray_trace(get_refracted_ray(original_ray,\
                         point, normal, obj), r_level - 1)
         #Combine colors
+        kr = obj.material.reflect
         i = 0
         while i < 3:
-            point_color[i] += reflect_color[i] + refract_color[i]
+            point_color[i] += kr * reflect_color[i] + refract_color[i]
             i += 1
     else:
         point_color = BGCOLOR
@@ -35,7 +36,7 @@ def ray_trace(original_ray, r_level = 3):
 def get_refracted_ray(ray, point, normal, obj):
     #n = n1 / n2 and n1 = 1 for air
     n = 1.0 / obj.material.refract
-    cost1 = dot_product(ray, normal)
+    cost1 = dot_product(ray.direction, normal)
     cost2 = sqrt(1.0 - ((n * n) * (1.0 - (cost1 * cost1))))
     refract_direction = ray.direction * n + normal * (cost2 - n * cost1)
     refract_direction.normalise()
