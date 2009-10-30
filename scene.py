@@ -46,15 +46,15 @@ def initialise_default_scene():
     light2 = Light(position2, l_color2)
     #Initialise objects
     #Object 1
-    center = Vector3(0, 17, -100)
+    center = Vector3(0, 10, -100)
     radius = 8 
     color = (0, 0, 1)
-    mat1 = Material(color, reflect = 0.0)
+    mat1 = Material(color, reflect = 0.0, refract = 1.0)
     sphere1 = Sphere(center, radius, mat1)
     #Object2
     center2 = Vector3(0, 10, -150)
     radius2 = 10 
-    color2 = (0.5, 0, 0.5)
+    color2 = (0.25, 0, 0.25)
     mat2 = Material(color2, refract = 0)
     sphere2 = Sphere(center2, radius2, mat2)
     #Object3: Ground plane
@@ -66,7 +66,7 @@ def initialise_default_scene():
 
     globs = globals()
     #Add the objects to the object list
-    #globs['objects'].append(sphere2)
+    globs['objects'].append(sphere2)
     globs['objects'].append(sphere1)
     globs['objects'].append(plane1)
     

@@ -5,7 +5,7 @@ from scene import objects, lights, BGCOLOR
 from vector3 import dot_product
 from ray import Ray
 
-def ray_trace(original_ray, r_level = 3, ref_index = 1.0):
+def ray_trace(original_ray, r_level = 4):
     obj, dist = get_first_intersection(original_ray)
     reflect_color = [0, 0, 0]
     refract_color = [0, 0, 0]
@@ -18,10 +18,10 @@ def ray_trace(original_ray, r_level = 3, ref_index = 1.0):
             if obj.material.reflect != 0:
                #Recursively ray-trace
                 reflect_color = ray_trace(get_reflected_ray(original_ray,\
-                        point, - normal), r_level - 1)
-            if obj.material.refract !=0:
+                        point, normal), r_level - 1)
+            if obj.material.refract != 0.0:
                 refract_color = ray_trace(get_refracted_ray(original_ray,\
-                        point, normal, obj), r_level - 1, obj.material.refractive_index)
+                        point, normal, obj), r_level - 1)
         #Combine colors
         kr = obj.material.reflect
         i = 0
@@ -33,14 +33,19 @@ def ray_trace(original_ray, r_level = 3, ref_index = 1.0):
 
     return point_color
 
-def get_refracted_ray(ray, point, normal, obj, ref_index):
+def get_refracted_ray(ray, point, normal, obj):
     #n = n1 / n2 and n1 = ref_index
-    n = 1.0 / obj.material.refract
     cost1 = dot_product(ray.direction, normal)
+    if cost1 < 0.0:
+        n = 1.0 / obj.material.refract
+        cost1 = -cost1
+    else:
+        normal = -normal
+        n = obj.material.refract
     cost2 = sqrt(1.0 - ((n * n) * (1.0 - (cost1 * cost1))))
-    refract_direction = ray.direction * n + normal * (cost2 - n * cost1)
+    refract_direction = ray.direction * n + normal * (n * cost1 - cost2)
     refract_direction.normalise()
-    refracted_ray = Ray(point + refract_direction * 0.001, refract_direction)
+    refracted_ray = Ray(point + refract_direction * 0.0001, refract_direction)
     return refracted_ray
 
 def get_reflected_ray(original_ray, point, normal):
