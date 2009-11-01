@@ -46,7 +46,7 @@ def initialise_default_scene():
     light2 = Light(position2, l_color2)
     #Initialise objects
     #Object 1
-    center = Vector3(0, 10, -100)
+    center = Vector3(0, 15, -100)
     radius = 8 
     color = (0, 0, 1)
     mat1 = Material(color, reflect = 0.0, refract = 1.0)

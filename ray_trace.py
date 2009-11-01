@@ -5,6 +5,9 @@ from scene import objects, lights, BGCOLOR
 from vector3 import dot_product
 from ray import Ray
 
+from sphere import Sphere
+from material import Material
+
 def ray_trace(original_ray, r_level = 4):
     obj, dist = get_first_intersection(original_ray)
     reflect_color = [0, 0, 0]
@@ -33,7 +36,7 @@ def ray_trace(original_ray, r_level = 4):
 
     return point_color
 
-def get_refracted_ray(ray, point, normal, obj):
+def get_refracted_ray1(ray, point, normal, obj):
     #n = n1 / n2 and n1 = ref_index
     cost1 = dot_product(ray.direction, normal)
     if cost1 < 0.0:
@@ -43,9 +46,29 @@ def get_refracted_ray(ray, point, normal, obj):
         normal = -normal
         n = obj.material.refract
     cost2 = sqrt(1.0 - ((n * n) * (1.0 - (cost1 * cost1))))
+    #refract_direction = ray.direction * n - normal * (n * cost1 + cost2)
     refract_direction = ray.direction * n + normal * (n * cost1 - cost2)
     refract_direction.normalise()
     refracted_ray = Ray(point + refract_direction * 0.0001, refract_direction)
+    return refracted_ray
+
+def get_refracted_ray2(ray, point, normal, obj):
+    #n = n1 / n2 and n1 = ref_index
+    cosine = dot_product(ray.direction, normal)
+    if cosine < 0.0:
+        temp1 = 1.0 / obj.material.refract
+        cosine = -cosine
+        root = 1.0 - (temp1 * temp1) *(1.0 - cosine * cosine)
+        transmission = ray.direction * temp1 + normal * ( temp1 * cosine -sqrt(root))
+    else:
+        nt = obj.material.refract
+        temp2 = dot_product(ray.direction, normal)
+        root = 1.0 - (nt * nt) *(1.0 - temp2 * temp2)
+        if root < 0.0:
+            print "error"
+        else:
+            transmission = ray.direction * nt - normal * (nt * temp2 - sqrt(root))         
+    refracted_ray = Ray(point + transmission * 0.0001, transmission)
     return refracted_ray
 
 def get_reflected_ray(original_ray, point, normal):
@@ -140,3 +163,6 @@ def phong_light(point, normal, eye, material):
                     + k_s * s_color[i] * specular
             i += 1
     return point_color
+
+if __name__ == "__main__":
+    pass
