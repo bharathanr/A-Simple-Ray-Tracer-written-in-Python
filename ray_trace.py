@@ -36,40 +36,49 @@ def ray_trace(original_ray, r_level = 4):
 
     return point_color
 
-def get_refracted_ray1(ray, point, normal, obj):
-    #n = n1 / n2 and n1 = ref_index
-    cost1 = dot_product(ray.direction, normal)
-    if cost1 < 0.0:
-        n = 1.0 / obj.material.refract
-        cost1 = -cost1
+def get_refracted_ray(ray, point, normal, obj):
+    #Refractive indices :: Hard coded for now
+    nc = 1.0
+    nt = 1.5
+    #Name changes - to keep track of things...
+    in_dir = ray.direction
+    #temp is used to decide if the ray is entering or exiting the medium
+    temp = dot_product(in_dir, normal)
+    if temp < 0.0:
+        into = True
+        nl = normal
     else:
-        normal = -normal
-        n = obj.material.refract
-    cost2 = sqrt(1.0 - ((n * n) * (1.0 - (cost1 * cost1))))
-    #refract_direction = ray.direction * n - normal * (n * cost1 + cost2)
-    refract_direction = ray.direction * n + normal * (n * cost1 - cost2)
-    refract_direction.normalise()
-    refracted_ray = Ray(point + refract_direction * 0.0001, refract_direction)
-    return refracted_ray
-
-def get_refracted_ray2(ray, point, normal, obj):
-    #n = n1 / n2 and n1 = ref_index
-    cosine = dot_product(ray.direction, normal)
-    if cosine < 0.0:
-        temp1 = 1.0 / obj.material.refract
-        cosine = -cosine
-        root = 1.0 - (temp1 * temp1) *(1.0 - cosine * cosine)
-        transmission = ray.direction * temp1 + normal * ( temp1 * cosine -sqrt(root))
+        into = False
+        nl = - normal
+    #into tells you if the ray is entering or exiting!
+    
+    #Determine n1 / n2 
+    if into:
+        nnt = nc / nt
     else:
-        nt = obj.material.refract
-        temp2 = dot_product(ray.direction, normal)
-        root = 1.0 - (nt * nt) *(1.0 - temp2 * temp2)
-        if root < 0.0:
-            print "error"
+        nnt = nt / nc
+    
+    #Next compute cos theta
+    ddn = dot_product(in_dir, nl)
+    
+    #Now compute the other cosine
+    cos2t =  1 - (nnt * nnt) * (1 - ddn * ddn)
+    #Deal with total internal reflection
+    if cos2t < 0.0:
+        print "error"
+        refract_direction = None
+    else: 
+        if into:
+            temp2 = normal * (ddn * nnt + sqrt(cos2t))
+            temp2.normalise()
+            refract_direction = in_dir * nnt - temp2 
         else:
-            transmission = ray.direction * nt - normal * (nt * temp2 - sqrt(root))         
-    refracted_ray = Ray(point + transmission * 0.0001, transmission)
-    return refracted_ray
+            temp2 = normal * (ddn * nnt + sqrt(cos2t))
+            temp2.normalise()
+            refract_direction = in_dir * nnt + temp2
+    refracted_ray = Ray(point + refract_direction * 0.001, refract_direction)
+    return refracted_ray    
+
 
 def get_reflected_ray(original_ray, point, normal):
     #Calculate the reflected ray
